@@ -23,7 +23,7 @@ class ETRDataSetAmazonRandomPrefix(Dataset):
         self.max_length = max_length
         self.bert_tokenizer = bert_tokenizer
         self.df = df
-        self.spacy_tokeizer = spacy.blank("en")
+        self.spacy_tokeizer = spacy.blank("es")
 
     def __len__(self):
         return len(self.df)

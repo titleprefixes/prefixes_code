@@ -65,6 +65,8 @@ def process_df(df,tokenizer):
     df['tok_len'] = df['title'].apply(lambda x: len(tokenizer(x)))
     df = df[df.label!=102]
     df = df[df.tok_len>=2].reset_index(drop=True)
+    df['label'] = pd.Categorical(df['label'])
+    df['label'] = df['label'].cat.codes
     return df
 
 def save_ckpt(model, model_dir, name):

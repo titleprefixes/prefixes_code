@@ -23,5 +23,7 @@ parser.add_argument('--tensorboard_log_dir', default="log_dir", help='tensorboar
 parser.add_argument('--mode', default="complete", help='mode for running experiment')
 parser.add_argument('--warmup_steps', default=1e4, type=int, help='number of lr warmup steps')
 parser.add_argument('--models_dir', type=str, default="models/", help='output model directory')
+parser.add_argument('--w2v_model_path', type=str, default="w2v_models/", help='w2v model path')
+parser.add_argument('--w2v_input_path', type=str, default="w2v_models/", help='w2v input file path for training')
 
 
