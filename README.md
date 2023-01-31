@@ -1,5 +1,5 @@
 # title_prefixes
-Code for "Product Categorization based on Title Prefixes" paper
+Code for "Selling Flow Enhancement by Early Product Categorization" paper
 
 
 # Data
