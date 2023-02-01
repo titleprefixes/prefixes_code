@@ -295,7 +295,7 @@ def train_model(model,
 
 def instantiate_train_amazon(configuration, seed,hparams):
     hidden_size, learning_rate, batch_size, dropout, num_layers, wd, window_size = configuration
-    prefix = bool(hparams.prefix)
+
 
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
@@ -333,7 +333,7 @@ def instantiate_train_amazon(configuration, seed,hparams):
 
     number_of_classes = train['label'].nunique()
 
-    if prefix:
+    if hparams.mode=='random':
         train_dl = DataLoader(LSTMPrefixTitlesDataset(train, "title", "label", w2v_model.key_to_index,
                                                       unk_token_id=len(word2vec_vectors) - 2),
                               batch_size=batch_size, num_workers=4, shuffle=True,

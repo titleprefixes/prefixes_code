@@ -1,9 +1,10 @@
-from .dataset import collate_batch_amazon, get_data_loader_amazon
+from .dataset import collate_batch_amazon, get_data_loader_amazon, collate_batch_random_prefix_with_aspects_amazon
 from functools import partial
 from .utils import model_and_tokenizer_from_spec_cls, train_model, process_df, create_subsets_df
 from .config import parser
 import pandas as pd
 import spacy
+import pickle
 
 if __name__ == '__main__':
     hparams = parser.parse_args()
@@ -14,7 +15,7 @@ if __name__ == '__main__':
                       keep_default_na=False, na_values=['_'])
 
 
-    if hparams.mode in ['subsets', 'random']:
+    if hparams.mode in ['subsets', 'random','attributes']:
         spacy_tokenizer = spacy.blank("en")
         train['title'] = train['title'].apply(lambda x: " ".join(x.split()))
         dev['title'] = dev['title'].apply(lambda x: " ".join(x.split()))
@@ -29,10 +30,18 @@ if __name__ == '__main__':
             dev = create_subsets_df(dev, spacy_tokenizer)
 
     model, tokenizer = model_and_tokenizer_from_spec_cls(hparams.bert_model_name, num_classes=train['label'].nunique())
-    collate_fn = partial(collate_batch_amazon, pad_token_id=tokenizer.pad_token_id)
-    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn, batch_size=hparams.batch_size, num_workers=4,
+    if hparams.mode!='attributes':
+        collate_fn = partial(collate_batch_amazon, pad_token_id=tokenizer.pad_token_id)
+        common_tags = []
+    else:
+        with open(hparams.common_tags_file,'rb') as f:
+            common_tags = pickle.load(f)
+        collate_fn = partial(collate_batch_random_prefix_with_aspects_amazon, pad_token_id=tokenizer.pad_token_id,only_aspect_sentence=bool(hparams.only_aspect_sentence))
+
+
+    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4,
                                       shuffle=True)
-    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn, batch_size=hparams.batch_size, num_workers=4)
+    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4)
 
     # conduct training with given parameters
     train_model(model, train_dl, dev_dl, hparams.lr, hparams.batch_size, hparams.wd, hparams.num_epochs,
