@@ -37,7 +37,7 @@ if __name__ == '__main__':
         with open(hparams.common_tags_file,'rb') as f:
             common_tags = pickle.load(f)
             if bool(hparams.no_aspect_tokens):
-                common_tags.append('UNKOWN')
+                common_tags.append('UNKNOWN')
         collate_fn = partial(collate_batch_random_prefix_with_aspects_amazon, pad_token_id=tokenizer.pad_token_id,only_aspect_sentence=bool(hparams.only_aspect_sentence))
         tokenizer.add_special_tokens({'additional_special_tokens': [f'[{tag}]' for tag in common_tags]})
         model.bert.resize_token_embeddings(len(tokenizer))
