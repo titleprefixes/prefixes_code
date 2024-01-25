@@ -43,9 +43,9 @@ if __name__ == '__main__':
         model.bert.resize_token_embeddings(len(tokenizer))
 
 
-    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=0,
+    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4,
                                       shuffle=True)
-    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=0)
+    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4)
 
     # conduct training with given parameters
     train_model(model, train_dl, dev_dl, hparams.lr, hparams.batch_size, hparams.wd, hparams.num_epochs,
