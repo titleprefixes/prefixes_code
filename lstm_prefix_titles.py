@@ -190,7 +190,10 @@ def train_model(model,
                 device=torch.device('cuda'),
                 log_dir="./"
                 ):
-    LSTM_MODEL_DIR = "/data/ebay/data/ggoren/etr_models/"
+
+    LSTM_MODEL_DIR = "lstm_models/"
+    if not os.path.exists(LSTM_MODEL_DIR):
+        os.makedirs(LSTM_MODEL_DIR)
     MIN_DELTA = 0.05
     PATIENCE = 2
 
