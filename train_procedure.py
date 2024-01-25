@@ -1,7 +1,7 @@
-from .dataset import collate_batch_amazon, get_data_loader_amazon, collate_batch_random_prefix_with_aspects_amazon
+from dataset import collate_batch_amazon, get_data_loader_amazon, collate_batch_random_prefix_with_aspects_amazon
 from functools import partial
-from .utils import model_and_tokenizer_from_spec_cls, train_model, process_df, create_subsets_df
-from .config import parser
+from utils import model_and_tokenizer_from_spec_cls, train_model, process_df, create_subsets_df
+from config import parser
 import pandas as pd
 import spacy
 import pickle
@@ -43,11 +43,11 @@ if __name__ == '__main__':
         model.bert.resize_token_embeddings(len(tokenizer))
 
 
-    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4,
+    train_dl = get_data_loader_amazon(train, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=0,
                                       shuffle=True)
-    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=4)
+    dev_dl = get_data_loader_amazon(dev, tokenizer, collate_fn,hparams.mode, bool(hparams.no_aspect_tokens),bool(hparams.only_aspect_sentence),common_tags,batch_size=hparams.batch_size, num_workers=0)
 
     # conduct training with given parameters
     train_model(model, train_dl, dev_dl, hparams.lr, hparams.batch_size, hparams.wd, hparams.num_epochs,
-                hparams.warmpup_steps, hparams.seed, hparams.tensorboard_log_dir, hparams.models_dir,
+                hparams.warmup_steps, hparams.seed, hparams.tensorboard_log_dir, hparams.models_dir,
                 hparams.checkpoint_prefix, hparams.patience, hparams.min_delta)

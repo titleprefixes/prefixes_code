@@ -1,5 +1,5 @@
 from transformers import BertModel, BertTokenizerFast
-from .model import FineTuneBertMultiClassCLS
+from model import FineTuneBertMultiClassCLS
 import torch
 from transformers import AdamW
 from torch.utils.tensorboard import SummaryWriter
@@ -119,7 +119,7 @@ def train_model(model,train_dl,dev_dl,learning_rate, batch_size, wd,epochs,warmu
     BEST_ACC = 0
     MIN_DELTA = min_delta
     BEST_LOSS = float("inf")
-    device = torch.device("cuda")
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
 
 

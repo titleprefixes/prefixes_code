@@ -3,7 +3,7 @@ import pandas as pd
 import spacy
 import re
 
-from .config import parser
+from config import parser
 
 
 def train_model(model_path, processed_file_path, window_size):

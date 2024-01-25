@@ -27,5 +27,6 @@ parser.add_argument('--w2v_model_path', type=str, default="w2v_models/", help='w
 parser.add_argument('--w2v_input_path', type=str, default="w2v_models/", help='w2v input file path for training')
 parser.add_argument('--no_aspect_tokens', type=int, default=1,choices=[0,1], help='no aspect tokens flag')
 parser.add_argument('--only_aspect_sentence', type=int, default=0,choices=[0,1], help='only aspect sentence flag')
+parser.add_argument('--common_tags_file', type=str, default="data/amazon_common_tags_hash.pkl", help='common tags in dataset')
 
 
