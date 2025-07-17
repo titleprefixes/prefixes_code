@@ -16,7 +16,7 @@ To run training and create model checkpoints execute the "{base_model}_train_pro
 To control the flow of the training we can modify the --mode parameter. 
 Accepted values are:
 * **complete** - training the model on complete titles (original input).
-* **random** - training the model on random prefixes - for each title we randomly select a prefix to be considered as input for the model.
+* **random** - training the model on random prefixes - for each title we randomly select a prefix to be considered as input for the model (main mode in the paper).
 * **subsets** - first we generate all possible prefix subsets, and then we train the model over all the subsets.
 
 # LSTM training additional details
